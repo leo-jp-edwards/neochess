@@ -1,0 +1,41 @@
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  default: none
+  enable:
+    - errcheck        # unchecked errors
+    - govet           # reports suspicious constructs
+    - staticcheck     # staticcheck, gosimple, stylecheck merged in v2
+    - unused          # unused code
+    - ineffassign     # detects ineffectual assignments
+    - misspell        # spelling mistakes
+    - gocritic        # opinionated checks
+    - revive          # drop-in replacement for golint
+    - gosec           # security issues
+    - bodyclose       # HTTP response body not closed
+    - noctx           # HTTP requests without context
+    - sqlclosecheck   # sql.Rows/Stmt not closed
+
+linters-settings:
+  govet:
+    enable:
+      - shadow
+  revive:
+    severity: warning
+    rules:
+      - name: exported
+        severity: warning
+  gosec:
+    excludes:
+      - G304 # file path from variable (acceptable for this tool)
+
+issues:
+  exclusions:
+    rules:
+      - path: "_test\\.go"
+        linters:
+          - errcheck
+          - gosec

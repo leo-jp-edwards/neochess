@@ -12,14 +12,14 @@ import (
 
 // SessionManager coordinates active play sessions
 type SessionManager struct {
-	store    *store.Store
+	store    store.GameStore
 	registry *engines.Registry
 	mu       sync.Mutex
 	sessions map[int64]*Session
 }
 
 // NewSessionManager creates a new session manager
-func NewSessionManager(s *store.Store, r *engines.Registry) *SessionManager {
+func NewSessionManager(s store.GameStore, r *engines.Registry) *SessionManager {
 	return &SessionManager{
 		store:    s,
 		registry: r,

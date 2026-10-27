@@ -12,7 +12,10 @@ import (
 
 // Service manages analysis jobs and live analysis
 type Service struct {
-	store        *store.Store
+	store interface {
+		store.GameStore
+		store.AnalysisStore
+	}
 	registry     *engines.Registry
 	workerCount  int
 	mu           sync.Mutex
@@ -22,7 +25,10 @@ type Service struct {
 }
 
 // NewService creates a new analysis service
-func NewService(s *store.Store, r *engines.Registry) *Service {
+func NewService(s interface {
+	store.GameStore
+	store.AnalysisStore
+}, r *engines.Registry) *Service {
 	return &Service{
 		store:       s,
 		registry:    r,

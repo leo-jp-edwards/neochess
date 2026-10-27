@@ -6,6 +6,12 @@ import (
 	"flag"
 	"fmt"
 	"log/slog"
+	"neochess/analysis"
+	"neochess/engines"
+	"neochess/play"
+	"neochess/store"
+	"neochess/store/sqlitestore"
+	"neochess/web"
 	"net/http"
 	"os"
 	"os/signal"
@@ -34,15 +40,15 @@ func run() error {
 	}))
 	slog.SetDefault(logger)
 
-	db, err := store.Open(cfg.DataDir)
+	var db store.Store
+
+	db, err := sqlitestore.Open(context.Background(), sqlitestore.Options{
+		DataDir: cfg.DataDir,
+	})
 	if err != nil {
 		return fmt.Errorf("opening store: %w", err)
 	}
 	defer db.Close()
-
-	if err := db.Migrate(); err != nil {
-		return fmt.Errorf("running migrations: %w", err)
-	}
 
 	registry, err := engines.NewRegistry(cfg.ConfigDir)
 	if err != nil {
@@ -107,7 +113,7 @@ func run() error {
 	return nil
 }
 
-func ParseFlags() Config {
+func parseFlags() Config {
 	cfg := Config{}
 
 	flag.StringVar(&cfg.Addr, "addr", getEnvOrDefault("LOCALCHESS_ADDR", "127.0.0.1:8080"),

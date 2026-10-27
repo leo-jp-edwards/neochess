@@ -16,7 +16,7 @@ var context embed.FS
 
 // Dependencies holds all services needed by the web handlers
 type Dependencies struct {
-	Store           *store.Store
+	Store           store.Store
 	EngineRegistry  *engines.Registry
 	SessionManager  *play.SessionManager
 	AnalysisService *analysis.Service

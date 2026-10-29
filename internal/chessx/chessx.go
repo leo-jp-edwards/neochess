@@ -3,12 +3,44 @@
 
 package chessx
 
+import (
+	"fmt"
+	"strings"
+
+	chess "github.com/corentings/chess/v2"
+)
+
 // Color represents a player color
-type Color int
+type Color string
 
 const (
-	White Color = iota
-	Black
+	White Color = "white"
+	Black Color = "black"
+)
+
+// Outcome identifies the game result from the current position
+type Outcome string
+
+const (
+	NoOutcome Outcome = "*"
+	WhiteWon  Outcome = "1-0"
+	BlackWon  Outcome = "0-1"
+	Draw      Outcome = "1/2-1/2"
+)
+
+// Method describes how the game ended.
+type Method string
+
+const (
+	MethodNone            Method = ""
+	MethodCheckmate       Method = "checkmate"
+	MethodStalemate       Method = "stalemate"
+	MethodInsufficientMat Method = "insufficient_material"
+	MethodThreefold       Method = "threefold_repetition"
+	MethodFivefold        Method = "fivefold_repetition"
+	MethodFiftyMoveRule   Method = "fifty_move_rule"
+	MethodSeventyFiveMove Method = "seventy_five_move_rule"
+	MethodOther           Method = "other"
 )
 
 // PieceType represents a chess piece type
@@ -28,45 +60,49 @@ const (
 type Square int
 
 // Move represents a chess move
+// UCI is the canonical internal representation used for storage and UCI engines,
+// for example "e2e4", "e7e8q"
 type Move struct {
-	From      Square
-	To        Square
-	Promotion PieceType
+	UCI string
+	SAN string
 }
 
 // Position represents a chess position
+// Intentionally do not expose github.com/corentings/chess/v2 types
 type Position struct {
-	// Underlying library position
+	game *chess.Game
 }
 
 // NewPosition creates the standard starting position.
 func NewPosition() *Position {
-	// TODO: Wrap library's starting position
-	return &Position{}
+	return &Position{
+		game: chess.NewGame(),
+	}
 }
 
 // FromFEN creates a position from FEN notation.
 func FromFEN(fen string) (*Position, error) {
-	// TODO: Parse FEN using library
-	return nil, nil
+	fen = strings.TrimSpace(fen)
+	if fen == "" {
+		return nil, fmt.Errorf("%w: empty FEN", ErrInvalidFEN)
+	}
+
+	opt, err := chess.FEN(fen)
+	if err != nil {
+		return nil, fmt.Errorf("%w: %v", ErrInvalidFEN, err)
+	}
+
+	return &Position{game: chess.NewGame(opt)}, nil
 }
 
-// FEN returns the FEN representation of the position.
-func (p *Position) FEN() string {
-	// TODO: Implement
-	return ""
-}
+// Clone returns an independent copy of the position
+// This uses FEN as the stable boundary instead of sharing upstream mutable state
+func (p *Position) Clone() (*Position, error) {
+	if p == nil || p.game == nil {
+		return NewPosition(), nil
+	}
 
-// Turn returns whose turn it is to move.
-func (p *Position) Turn() Color {
-	// TODO: Implement
-	return White
-}
-
-// LegalMoves returns all legal moves in the position.
-func (p *Position) LegalMoves() []Move {
-	// TODO: Implement
-	return nil
+	return FromFEN(p.FEN())
 }
 
 // LegalMovesFrom returns legal moves from a specific square.
@@ -86,22 +122,6 @@ func (p *Position) IsCheck() bool {
 	// TODO: Implement
 	return false
 }
-
-// Outcome returns the game outcome if the game is over.
-func (p *Position) Outcome() Outcome {
-	// TODO: Implement
-	return OutcomeOngoing
-}
-
-// Outcome represents the result of a game.
-type Outcome int
-
-const (
-	OutcomeOngoing Outcome = iota
-	OutcomeWhiteWins
-	OutcomeBlackWins
-	OutcomeDraw
-)
 
 // MoveToUCI converts a move to UCI notation.
 func (m Move) ToUCI() string {

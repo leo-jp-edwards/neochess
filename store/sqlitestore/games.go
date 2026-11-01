@@ -258,6 +258,7 @@ func (s *Store) ListInProgressGames(ctx context.Context) ([]store.Game, error) {
 	if err != nil {
 		return nil, fmt.Errorf("sqlitestore: list in-progress games: %w", err)
 	}
+	//nolint:errcheck
 	defer rows.Close()
 
 	return scanGames(rows)

@@ -102,7 +102,7 @@ func (e *Engine) NewGame(ctx context.Context) error {
 
 // Go starts a search and returns a channel of info updates
 // The channel is closed after BestMove is received or context is cancelled
-func (e *Engine) Go(ctx context.Context, pos Position, Lim Limits, opts GoOpts) (<-chan Info, error) {
+func (e *Engine) Go(ctx context.Context, pos Position, lim Limits, opts GoOpts) (<-chan Info, error) {
 	// TODO Send "position" command, then "go" with limits
 	// Spawn goroutine to parse info lines and send to channel
 	// On context cancel, send "stop" and wait for bestmove

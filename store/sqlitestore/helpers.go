@@ -76,7 +76,7 @@ func decodeGameCursor(cursor string) (time.Time, int64, error) {
 	}
 
 	var c gameCursor
-	if err := json.Unmarshal(body, &c); err != nil {
+	if err = json.Unmarshal(body, &c); err != nil {
 		return time.Time{}, 0, fmt.Errorf("sqlitestore: unmarshal cursor: %w", err)
 	}
 

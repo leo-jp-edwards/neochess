@@ -140,7 +140,7 @@ func (s *Service) Shutdown(ctx context.Context) {
 		for _, la := range s.liveEngines {
 			if la.engine != nil {
 			}
-			la.engine.Close()
+			_ = la.engine.Close()
 		}
 	})
 }

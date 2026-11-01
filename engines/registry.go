@@ -123,7 +123,7 @@ func (r *Registry) StartEngine(ctx context.Context, id string) (*uci.Engine, err
 
 	for name, value := range cfg.Options {
 		if err := engine.SetOption(name, value); err != nil {
-			engine.Close()
+			_ = engine.Close()
 			return nil, fmt.Errorf("engines: setting option %s: %w", name, err)
 		}
 	}

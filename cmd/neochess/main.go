@@ -48,12 +48,14 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("opening store: %w", err)
 	}
+	//nolint:errcheck
 	defer db.Close()
 
 	registry, err := engines.NewRegistry(cfg.ConfigDir)
 	if err != nil {
 		return fmt.Errorf("initialising engine registry: %w", err)
 	}
+	//nolint:errcheck
 	defer registry.Close()
 
 	sessionMgr := play.NewSessionManager(db, registry)

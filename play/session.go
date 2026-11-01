@@ -116,7 +116,7 @@ func (m *SessionManager) Shutdown(ctx context.Context) {
 
 	for _, s := range m.sessions {
 		if s.Engine != nil {
-			s.Engine.Close()
+			_ = s.Engine.Close()
 		}
 	}
 	m.sessions = make(map[int64]*Session)

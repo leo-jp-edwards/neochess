@@ -82,6 +82,7 @@ func appliedMigrations(ctx context.Context, tx *sql.Tx) (map[int]bool, error) {
 	if err != nil {
 		return nil, fmt.Errorf("sqlitestore: list applied migrations: %w", err)
 	}
+	//nolint:errcheck
 	defer rows.Close()
 
 	out := make(map[int]bool)

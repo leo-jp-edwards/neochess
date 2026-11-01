@@ -220,6 +220,7 @@ func (s *Store) ListGames(ctx context.Context, filter store.GameListFilter) (sto
 	if err != nil {
 		return store.GameListPage{}, fmt.Errorf("sqlite: list games: %w", err)
 	}
+	//nolint:errcheck
 	defer rows.Close()
 
 	games, err := scanGames(rows)

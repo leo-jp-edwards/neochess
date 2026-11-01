@@ -1,0 +1,58 @@
+.chess-board cg-board {
+    background-color: #f0d9b5;
+    background-image: conic-gradient(
+            #b58863 0 25%,
+            #f0d9b5 0 50%,
+            #b58863 0 75%,
+            #f0d9b5 0
+    );
+    background-size: 25% 25%;
+}
+
+piece.white.king {
+    background-image: url("/static/img/pieces/alpha/wK.svg");
+}
+
+piece.white.queen {
+    background-image: url("/static/img/pieces/alpha/wQ.svg");
+}
+
+piece.white.rook {
+    background-image: url("/static/img/pieces/alpha/wR.svg");
+}
+
+piece.white.bishop {
+    background-image: url("/static/img/pieces/alpha/wB.svg");
+}
+
+piece.white.knight {
+    background-image: url("/static/img/pieces/alpha/wN.svg");
+}
+
+piece.white.pawn {
+    background-image: url("/static/img/pieces/alpha/wP.svg");
+}
+
+piece.black.king {
+    background-image: url("/static/img/pieces/alpha/bK.svg");
+}
+
+piece.black.queen {
+    background-image: url("/static/img/pieces/alpha/bQ.svg");
+}
+
+piece.black.rook {
+    background-image: url("/static/img/pieces/alpha/bR.svg");
+}
+
+piece.black.bishop {
+    background-image: url("/static/img/pieces/alpha/bB.svg");
+}
+
+piece.black.knight {
+    background-image: url("/static/img/pieces/alpha/bN.svg");
+}
+
+piece.black.pawn {
+    background-image: url("/static/img/pieces/alpha/bP.svg");
+}

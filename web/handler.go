@@ -11,8 +11,8 @@ import (
 	"net/http"
 )
 
-//go:embed templates/*.html static/*
-var context embed.FS
+//go:embed templates static
+var assets embed.FS
 
 // Dependencies holds all services needed by the web handlers
 type Dependencies struct {
@@ -24,26 +24,33 @@ type Dependencies struct {
 
 // Handler is the main HTTP handler for the application
 type Handler struct {
-	deps Dependencies
-	mux  *http.ServeMux
-	csrf string // per-process CSRF token
+	deps     Dependencies
+	mux      *http.ServeMux
+	renderer *Renderer
+	csrf     string // per-process CSRF token
 }
 
 // NewHandler creates a new HTTP handler with all routes configured
-func NewHandler(deps Dependencies) *Handler {
+func NewHandler(deps Dependencies) (*Handler, error) {
+	renderer, err := NewRenderer()
+	if err != nil {
+		return nil, err
+	}
+
 	h := &Handler{
-		deps: deps,
-		mux:  http.NewServeMux(),
-		csrf: generateCSRFToken(),
+		deps:     deps,
+		mux:      http.NewServeMux(),
+		renderer: renderer,
+		csrf:     generateCSRFToken(),
 	}
 
 	h.setupRoutes()
-	return h
+	return h, nil
 }
 
 func (h *Handler) setupRoutes() {
 	// Static assets
-	h.mux.HandleFunc("GET /static/", h.handleStatic)
+	h.mux.Handle("GET /static/", http.StripPrefix("/static/", StaticHandler()))
 
 	// Pages
 	h.mux.HandleFunc("GET /", h.handleIndex)
@@ -84,10 +91,12 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// Security middleware
 	if !h.checkHost(r) {
 		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
 	}
 
 	if !h.checkOrigin(r) {
 		http.Error(w, "Forbidden", http.StatusForbidden)
+		return
 	}
 
 	h.mux.ServeHTTP(w, r)
@@ -107,7 +116,3 @@ func generateCSRFToken() string {
 	// TODO Generate random token
 	return "csrf-token-placeholder"
 }
-
-// Stub handlers - each would render templates or return htmx fragments
-
-func (h *Handler) handleStatic(w http.ResponseWriter, r *http.Request) {}

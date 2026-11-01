@@ -60,12 +60,15 @@ func run() error {
 
 	analysisSvc := analysis.NewService(db, registry)
 
-	handler := web.NewHandler(web.Dependencies{
+	handler, err := web.NewHandler(web.Dependencies{
 		Store:           db,
 		EngineRegistry:  registry,
 		SessionManager:  sessionMgr,
 		AnalysisService: analysisSvc,
 	})
+	if err != nil {
+		return fmt.Errorf("error initialising endpoint handler: %w", err)
+	}
 
 	srv := &http.Server{
 		Addr:         cfg.Addr,

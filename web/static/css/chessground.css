@@ -1,0 +1,128 @@
+.cg-wrap {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+    box-sizing: border-box;
+}
+
+cg-container {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+cg-board {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+}
+
+square {
+    position: absolute;
+    width: 12.5%;
+    height: 12.5%;
+    pointer-events: none;
+}
+
+piece {
+    position: absolute;
+    width: 12.5%;
+    height: 12.5%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 2;
+    will-change: transform;
+    pointer-events: auto;
+}
+
+piece.dragging {
+    cursor: grabbing;
+    z-index: 10;
+}
+
+piece.ghost {
+    opacity: 0.3;
+}
+
+cg-board square.last-move {
+    background-color: rgb(255 255 0 / 0.28);
+}
+
+cg-board square.selected {
+    background-color: rgb(20 85 30 / 0.45);
+}
+
+cg-board square.move-dest {
+    background: radial-gradient(rgb(20 85 30 / 0.45) 19%, transparent 20%);
+}
+
+cg-board square.move-dest.oc {
+    background: radial-gradient(transparent 0%, transparent 79%, rgb(20 85 30 / 0.45) 80%);
+}
+
+cg-board square.check {
+    background: radial-gradient(ellipse at center, rgb(255 0 0 / 0.65) 0%, rgb(231 0 0 / 0.35) 45%, transparent 70%);
+}
+
+coords {
+    position: absolute;
+    display: flex;
+    pointer-events: none;
+    color: rgb(255 255 255 / 0.95);
+    font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+    font-weight: 800;
+    line-height: 1;
+    z-index: 5;
+    text-shadow:
+            0 1px 2px rgb(0 0 0 / 0.8),
+            0 0 4px rgb(0 0 0 / 0.65);
+}
+
+coords.ranks {
+    right: 0.35rem;
+    top: 0.4rem;
+    bottom: 0.4rem;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+}
+
+coords.files {
+    left: 0.45rem;
+    right: 0.45rem;
+    bottom: 0.35rem;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+coords.black {
+    color: rgb(20 20 20 / 0.9);
+    text-shadow:
+            0 1px 2px rgb(255 255 255 / 0.75),
+            0 0 4px rgb(255 255 255 / 0.55);
+}
+
+cg-shapes,
+cg-custom-svgs,
+cg-shapes-below,
+cg-custom-below {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+}
+
+cg-shapes-below,
+cg-custom-below {
+    z-index: 1;
+}

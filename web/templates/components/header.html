@@ -1,0 +1,24 @@
+{{ define "components/header" }}
+<header class="app-header">
+    <a href="/" class="app-title" hx-boost="true">
+        NeoChess
+    </a>
+
+    <button
+            id="nav-toggle"
+            class="burger-button"
+            type="button"
+            aria-label="Open navigation"
+            aria-controls="nav-menu"
+            aria-expanded="false"
+            data-nav-toggle>
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+</header>
+
+<nav id="nav-menu" class="nav-menu" aria-label="Main navigation" hidden>
+    {{ template "partials/nav_menu" . }}
+</nav>
+{{ end }}

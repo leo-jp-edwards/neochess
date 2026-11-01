@@ -1,0 +1,14 @@
+{{ define "components/board" }}
+<section class="panel">
+    <div
+            id="chess-board"
+            class="chess-board"
+            data-board
+            data-game-id="{{ .GameID }}"
+            data-fen="{{ .FEN }}"
+            data-orientation="{{ .Orientation }}"
+            data-turn="{{ .Turn }}"
+            data-move-url="/partials/games/{{ .GameID }}/move">
+    </div>
+</section>
+{{ end }}

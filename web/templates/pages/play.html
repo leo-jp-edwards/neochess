@@ -1,0 +1,41 @@
+{{ define "pages/play" }}
+{{ template "layouts/base" . }}
+{{ end }}
+
+{{ define "title" }}Play - NeoChess{{ end }}
+
+{{ define "content" }}
+<section class="page-header">
+    <h1>Play</h1>
+    <p>Start a local game against a UCI engine.</p>
+</section>
+
+<section class="play-layout">
+    <aside class="panel play-side-panel">
+        <h2>Game</h2>
+
+        <nav class="play-actions" aria-label="Game actions">
+            <button type="button">New</button>
+            <button type="button">Flip</button>
+            <button type="button">Undo</button>
+            <button type="button">Resign</button>
+        </nav>
+    </aside>
+
+    <div class="play-board-panel">
+        {{ with .Board }}
+        {{ template "components/board" . }}
+        {{ else }}
+        <section class="panel">
+            <h2>Board unavailable</h2>
+            <p>No board data was provided.</p>
+        </section>
+        {{ end }}
+    </div>
+
+    <aside class="panel play-info-panel">
+        <h2>New game</h2>
+        <p>Board integration smoke test.</p>
+    </aside>
+</section>
+{{ end }}

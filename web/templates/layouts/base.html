@@ -1,0 +1,31 @@
+{{ define "layouts/base" }}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ block "title" . }}NeoChess{{ end }}</title>
+
+    <link rel="stylesheet" href="/static/css/app.css">
+    <link rel="stylesheet" href="/static/css/chessground.css">
+    <link rel="stylesheet" href="/static/css/chessground-theme.css">
+
+    <script src="/static/js/htmx.min.js" defer></script>
+    <script src="/static/js/htmx-sse.js" defer></script>
+    <script type="module" src="/static/js/board-controller.js"></script>
+    <script src="/static/js/app.js" defer></script>
+</head>
+
+<body>
+<div class="app-shell">
+    {{ template "components/header" . }}
+
+    <main id="main" class="app-main">
+        {{ block "content" . }}{{ end }}
+    </main>
+
+    {{ template "components/footer" . }}
+</div>
+</body>
+</html>
+{{ end }}

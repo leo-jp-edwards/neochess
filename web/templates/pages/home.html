@@ -1,0 +1,34 @@
+{{ define "pages/home" }}
+{{ template "layouts/base" . }}
+{{ end }}
+
+{{ define "title" }}NeoChess{{ end }}
+
+{{ define "content" }}
+<section class="page-header">
+    <h1>NeoChess</h1>
+    <p>Play, import, review and analyse games locally.</p>
+</section>
+
+<section class="action-grid">
+    <a class="action-card" href="/play" hx-boost="true">
+        <strong>New game</strong>
+        <span>Play a local engine</span>
+    </a>
+
+    <a class="action-card" href="/library" hx-boost="true">
+        <strong>Library</strong>
+        <span>Search imported and played games</span>
+    </a>
+
+    <a class="action-card" href="/engines" hx-boost="true">
+        <strong>Engines</strong>
+        <span>Configure Stockfish, Lc0, or any UCI compatible engine</span>
+    </a>
+
+    <a class="action-card" href="/settings" hx-boost="true">
+        <strong>Settings</strong>
+        <span>Application settings configured here</span>
+    </a>
+</section>
+{{ end }}

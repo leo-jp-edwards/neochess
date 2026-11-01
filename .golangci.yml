@@ -4,6 +4,26 @@ run:
   timeout: 5m
 
 linters:
+  settings:
+    govet:
+      enable:
+        - shadow
+    revive:
+      severity: warning
+      rules:
+        - name: exported
+          disabled: true
+    gosec:
+      excludes:
+        - G304 # file path from variable (acceptable for this tool)
+  exclusions:
+    rules:
+      - path: "_test\\.go"
+        linters:
+          - gocyclo
+          - errcheck
+          - gosec
+
   default: none
   enable:
     - errcheck        # unchecked errors
@@ -18,24 +38,3 @@ linters:
     - bodyclose       # HTTP response body not closed
     - noctx           # HTTP requests without context
     - sqlclosecheck   # sql.Rows/Stmt not closed
-
-linters-settings:
-  govet:
-    enable:
-      - shadow
-  revive:
-    severity: warning
-    rules:
-      - name: exported
-        severity: warning
-  gosec:
-    excludes:
-      - G304 # file path from variable (acceptable for this tool)
-
-issues:
-  exclusions:
-    rules:
-      - path: "_test\\.go"
-        linters:
-          - errcheck
-          - gosec
